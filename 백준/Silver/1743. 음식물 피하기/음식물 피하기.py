@@ -13,11 +13,12 @@ dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 
+# 각 좌표값이 최대로 갈 수 있을 만큼 탐색
 def bfs(x, y, board):
     queue = deque()
     queue.append((x,y))
     result = 1
-    board[x][y] = 2
+    board[x][y] = 2 # 2는 방문했다는 표시
 
     
     while queue:
@@ -32,13 +33,15 @@ def bfs(x, y, board):
                 board[nx][ny] = 2
                 result += 1
     return result
-            
+
+temp = board
 answer = 0
 for i in range(n):
     for j in range(m):
         if board[i][j] == 1:
             ans = bfs(i, j, board)
             answer = max(ans, answer)
+            board = temp
 
 print(answer)
 
