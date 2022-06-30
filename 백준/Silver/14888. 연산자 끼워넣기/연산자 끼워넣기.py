@@ -1,45 +1,28 @@
-from itertools import permutations
-from collections import deque
-
 n = int(input())
 per = list(map(int, input().split()))
-op = list(map(int, input().split()))
+plus, minus, mul, div = map(int, input().split())
 
-cal = ['+', '-', '*', '//']
+maximum = -1e9
+minimum = 1e9
 
-cal_list=[]
-
-for i in range(4):
-    if op[i] == 0:
-        pass
-    else:
-        for j in range(op[i]):
-            cal_list.append(cal[i])
-
-num_op = list(permutations(cal_list, len(cal_list)))
-q = deque(num_op)
-
-max_val = -1e9
-min_val = 1e9
-while q:
-    op_list = q.popleft()
-    result = per[0]
-
-    for i in range(1, len(per)):
-        if op_list[i-1] == '+':
-            result+=per[i]
-        elif op_list[i-1] == '-':
-            result-=per[i]
-        elif op_list[i-1] == '*':
-            result*=per[i]
-        else:
-            if result < 0:
-                result = -(abs(result)//per[i])
-            else:
-                result//=per[i]
+def dfs(i, result, plus, minus, mul, div):
+    global maximum, minimum
+    if i == n:
+        maximum = max(result, maximum)
+        minimum = min(result, minimum)
     
-    max_val = max(max_val, result)
-    min_val = min(min_val, result)
+    if plus:
+        dfs(i+1, result+per[i], plus-1, minus, mul, div)
+    if minus:
+        dfs(i+1, result-per[i], plus, minus-1, mul, div)
+    if mul:
+        dfs(i+1, result*per[i], plus, minus, mul-1, div)
+    if div:
+        if result < 0:
+            dfs(i+1, -(abs(result)//per[i]), plus, minus, mul, div-1)
+        else:
+            dfs(i+1, result//per[i], plus, minus, mul, div-1)
 
-print(max_val)
-print(min_val)
+dfs(1, per[0], plus, minus, mul, div)
+print(maximum)
+print(minimum)
