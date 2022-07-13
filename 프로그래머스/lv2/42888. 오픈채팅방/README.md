@@ -103,3 +103,40 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+
+### 풀이 🏆
+
+1. 최종적으로 answer에 넘겨 주는 문자열 배열은 변경 닉네임을 포함하는 들어오고 나가고의 문자열이기 때문에 변경 닉네임에 포커스를 맞춤
+2. uid는 유일하기 때문에 변경한 유저의 uid를 key값, 변경된 닉네임을 value로 하는 dictionary를 만들고, Enter or Leave, uid, 닉네임을 포함하는 문자열에서 해당 uid에 변경된
+닉네임을 넣음
+
+### 코드 📃
+
+```python 
+
+def solution(record):
+  chage = {}
+
+  for info in record:
+    temp = info.split(' ')
+    if temp[0] != 'Leave':
+      chage[temp[1]] = temp[2]
+
+  answer = []
+
+  for info in record:
+    temp = info.split(' ')
+    temp_s = ''
+    name = chage[temp[1]]
+    if temp[0] == 'Enter':
+      temp_s = name + "님이 들어왔습니다."
+    elif temp[0] == 'Leave':
+      temp_s = name + "님이 나갔습니다."
+    else:
+      continue
+
+    answer.append(temp_s)
+  return answer
+```
+
