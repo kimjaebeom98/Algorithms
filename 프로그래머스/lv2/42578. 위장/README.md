@@ -93,3 +93,32 @@ face에 해당하는 의상이 crow_mask, blue_sunglasses, smoky_makeup이므로
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+
+### 풀이(나) 🤣
+
+1. 옷의 종류별 갯수 구하기
+2. 한 종류에서 한 옷만 선택해야 하니깐 일단 한 종류의 갯수와 이 종류의 옷을 안 입을 때도 존재하니깐 이 둘의 합이다
+- 즉 상의는 4개, 하의는 3개, 안경은 2개가 있으면 상의에서 4개중 하나를 선택하거나 안 입거나, 하의에서 3개 중 하나를 선택하거나 안 입거나, 안경에서 2개 중 ..
+- **그러나** 모두 안 입는 경우는 있으면 안 되니 마지막에서 -1을 한다
+
+### 코드(나) 📃
+
+```python
+
+def solution(clothes):
+    answer = 1
+    chk = {}
+    for i in clothes:
+      if i[1] in chk:
+        chk[i[1]] += 1
+      else:
+        chk[i[1]] = 1
+      
+    for i in chk.values():
+      answer*=(i+1)
+        
+    
+
+    return answer-1
+```
