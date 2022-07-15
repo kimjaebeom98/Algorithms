@@ -80,3 +80,60 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+### 풀이(나) 🤣
+
+1. 모든 번호에 대하여 딕셔너리를 만든다
+2. phone_book에 들어 있는 번호를 하나씩 꺼내고 번호의 앞에서 부터 차례대로 
+덧붙여 번호 문자열로 만들어 이 번호 문자열을 가지는게 딕셔너리에 있는지 체크 
+- 예를 들어 꺼낸 번호가 '1234666'이면 '1' -> '12' -> '123' -> ... 가 딕셔너리에있는지 체크
+- 마지막으로 만들어진 번호 문자열 '1234666'은 1에서 만든 딕셔너리에 당연히 있기 때문에 마지막으로
+만들어진 번호 문자열을 체크하는건 생략한다.
+
+### 코드(나) 📃
+
+```python
+
+def solution(phone_book):
+    chk = {}
+    for i in phone_book:
+      if i not in chk:
+        chk[i] = 1
+
+    for i in range(len(phone_book)):
+      s = ''
+      for j in range(len(phone_book[i])):
+        s += phone_book[i][j]
+        if s == phone_book[i]:
+          break
+        if s in chk:
+          return False
+
+      chk[i] = 1
+    
+    return True
+```
+
+### 풀이(다른사람) & 코드(다른사람) 🔓
+
+**놀랍다 너무 깔끔해서..**
+
+1. phoneBook을 정렬하는 이유는 다른 제약을 안 줬을 때의 스트링은 오름차순 정렬
+- 예를 들어 ['14561', '11145', '1234', '12', '145']가 있으면 정렬 후 ['11145', '12', '1234', '145', '14561'] 임
+
+2. zip을 사용하여 ['11145', '12', '1234', '145', '14561'], ['12', '1234', '145', '14561']의 원소를 하나씩 꺼내서 비교
+- startswith를 사용하여 '1234'의 접두어 '12'를 찾을 수 있는 것이다.
+
+
+
+```python
+def solution(phoneBook):
+    phoneBook = sorted(phoneBook)
+
+    for p1, p2 in zip(phoneBook, phoneBook[1:]):
+        if p2.startswith(p1):
+            return False
+    return True
+    
+```
+
