@@ -69,3 +69,77 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+
+### 풀이(나) 🤣
+
+1. 기능 개발을 완료할 때 까지 걸리는 기간을 작업마다 각각 계산한다.
+2. 먼저 배포할 기능이 끝나기 전에 기능 개발을 완료한 작업들을 count한다
+
+### 코드(나) 📃
+
+```python
+from collections import deque
+
+progresses = [95, 90, 99, 99, 80, 99]
+speeds = 	[1, 1, 1, 1, 1, 1]
+
+new = deque()
+out = []
+for idx, data in enumerate(progresses):
+  r = (100 - data) % speeds[idx]
+  day = (100 - data) // speeds[idx]
+
+  if r :
+    day += 1
+  new.append(day)
+
+idx = 0
+k = new.popleft()
+cnt = 1
+while new:
+
+  if k >= new[0]:
+    new.popleft()
+    cnt+=1
+  else:
+    out.append(cnt)
+    k = new.popleft()
+    cnt=1
+
+out.append(cnt)
+print(out)
+
+```
+
+### 풀이(다른 사람)🎉
+
+위와 같다 그러나 좀 더 파이썬의 라이브러리를 활용하여 파이썬의 강점인 코드 간결화에 신경 썻다.
+
+차이점은 math 모듈을 이용하여 나 처럼 나머지가 잇으면 기간을 +1 하는게 아니라 어차피 나머지가 있으면 무조건 올림을 하는
+ceil함수를 사용했다. 그리고 원소를 두 개를 한꺼번에 꺼내며 비교할 수 있는 zip을 썻다.
+
+### 코드(다른 사람)📃
+
+```python
+import math
+
+progresses1 = [95, 90, 99, 99, 80, 99]
+speeds1 = 	[1, 1, 1, 1, 1, 1]
+
+progresses = [93, 30, 55]
+speeds = [1, 30, 5]
+
+answer = []
+new = [math.ceil((100-p)/s) for p, s in zip(progresses, speeds)]
+
+
+idx = 0
+for i in range(len(new)):
+  if new[idx] < new[i]:
+    answer.append(i - idx)
+    idx = i
+  
+answer.append(len(new) - idx)
+print(answer)
+```
