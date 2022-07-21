@@ -119,3 +119,86 @@
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://programmers.co.kr/learn/challenges
+
+### 풀이 1️⃣
+
+0. 다리의 길이 만큼 0으로 초기화 해준다.
+1. 일단 시간이 지날 때 마다 다리의 앞 부분을 pop 시켜준다
+- 어차피 뒤에서 다리에 새로 들어 올 조건을 파악한 후에 조건이 만족하면 트럭을 넣어주거나 만족하지 않으면 0을 넣으면 되기 때문
+2. 다리에 들어올 조건을 파악하는데, 조건을 만족하여 트럭이 들어오면 다리에 트럭 무게를 넣어주고 
+아니면 0을 넣는다
+
+### 코드 📃
+
+```python
+
+bridge_length = 100
+weight = 100
+truck_weights = [10]
+
+bridge = [0 for _ in range(bridge_length)]
+
+
+time = 0
+while bridge:
+  time += 1
+  bridge.pop(0)
+
+  if truck_weights:
+    if sum(bridge) + truck_weights[0] <= weight:
+      bridge.append(truck_weights.pop(0))
+    else:
+      bridge.append(0)
+
+print(time)
+
+```
+
+### 🤣
+
+맨 처음 pop(0) 대신 popleft()를 사용할려고 deque를 사용했는 데, 시간 초과가 났다.
+그러나 그래도 pop(0)를 사용해도 시간이 너무 오래걸렸다... 그래서 어디가 문제일 까 생각을 했는데
+아마 sum일 것 같다 그리고 while문에서 bridge에 의미없는 값이 잇어도 길이 계산을 하기 위해
+계속 남아있으니깐 이것 또한 개선하면 시간이 줄어들 것이다.
+
+### 코드(수정) 📃
+
+```python
+
+from collections import deque
+
+
+bridge_length = 100
+weight = 100
+truck_weights = [10]
+
+truck_weights = deque(truck_weights)
+bridge = deque([0 for _ in range(bridge_length)])
+total = 0
+time = 0
+while truck_weights:
+  time += 1
+  k = bridge.popleft()
+
+  if k :
+    total -= k
+
+  if total + truck_weights[0] <= weight:
+    bridge.append(truck_weights.popleft())
+    total += bridge[-1]
+  else:
+    bridge.append(0)
+
+time += len(bridge)
+print(time)
+
+```
+
+### 😊
+매 time마다 sum을 사용하여 요소들을 모두 더해서 조건을 비교하는 것은 엄청난 낭비이다.
+( 파이썬 내장함수 sum의 시간복잡도를 찾진 못 했지만 아마..?)
+그래서 total로 다리에 들어 오는 것들을 합하여 현재 다리의 트럭들의 무게를 추적하는 것이다
+또 bridge에 의미없는 값을 다 pop 시킬 때 까지 기다리지말고 의미없으면 바로 반복문을 종료해서
+남은 bridge의 길이를 더 해줬다! 재밌구만 아주!
+
+
