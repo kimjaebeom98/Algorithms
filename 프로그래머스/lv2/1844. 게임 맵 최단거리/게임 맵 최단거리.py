@@ -16,7 +16,6 @@ def solution(maps):
         q.append([start_x, start_y])
         visited[start_x][start_y] = 1
         
-        mini = n*m
         flag = 0
         while q:
             x, y = q.popleft()
@@ -31,11 +30,9 @@ def solution(maps):
                 if 0 <= nx < n and 0 <= ny < m and visited[nx][ny] == -1:
                     if maps[nx][ny] == 1:
                         visited[nx][ny] = visited[x][y] + 1
-                        if nx == n-1 and ny == m-1:
-                            mini = min(visited[nx][ny], mini)
                         q.append([nx, ny])
         if flag:
-            return mini
+            return visited[n-1][m-1]
         else:
             return -1
     
