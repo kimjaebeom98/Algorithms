@@ -18,8 +18,8 @@ def solution(begin, target, words):
     for i in range(len(words)):
       if not visited[i]:
         cnt = 0
-        for j in range(len(word)):
-          if word[j] != words[i][j]:
+        for j, k in zip(words[i], word):
+          if j != k:
             cnt+=1
         if cnt == 1:
           visited[i] = 1
