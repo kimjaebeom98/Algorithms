@@ -1,7 +1,4 @@
 def solution(s):
-  c = 1
-  count = 1
-  iter = s[:c]
   min_len = len(s)
   for i in range(1, len(s)//2+2):
     new_s = ''
