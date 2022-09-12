@@ -1,10 +1,8 @@
 def solution(s):
-    answer = 0
-    di = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+    chk = {'zero':'0', 'one':'1', 'two':'2', 'three':'3', 'four':'4', 'five':'5', 'six':'6', 'seven':'7', 'eight':'8', 'nine':'9'}
     
-    for idx, data in enumerate(di):
-        if data in s:
-            s = s.replace(data, str(idx))
+    for num_s in chk:
+        if num_s in s:
+            s = s.replace(num_s, chk[num_s])
     
-    answer = int(s)        
-    return answer
+    return int(s)
