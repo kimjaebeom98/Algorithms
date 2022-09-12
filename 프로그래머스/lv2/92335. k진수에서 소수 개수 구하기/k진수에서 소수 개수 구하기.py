@@ -1,33 +1,34 @@
+"""
+1. n을 k진수로 변환
+2. 변환된 값에서 원소 하나씩 살펴보는데 0이 아니면 stk에 넣고, 0을 만나면 stk를 다 뽑는 식으로
+3. stk에서 뽑은 거는 소수 판단해줌
+"""
 from collections import deque
 
-
-
-def n_to_k(n, k, res):
-    global answer
-    if n == 0:
-        return res
-    r = n % k # 나머지
-    q = n // k # 몫
-    res.append(r)
-    return n_to_k(q, k, res)
-
 def solution(n, k):
-    count = 0
-    res = n_to_k(n, k, [])
-    res = [str(res[i]) for i in range(len(res)-1, -1, -1)]
-    res = ''.join(res)
+    cnt = 0
+    n_to_k = ''
+    tmp = []
+    while n:
+        r = n % k
+        n = n // k
+        tmp.append(str(r))
+    while tmp:
+        i = tmp.pop()
+        n_to_k += i
     
-    res = res.split('0')
-    for num in res:
-        if len(num) == 0 or int(num) < 2:
+    n_to_k = n_to_k.split('0')
+    for num in n_to_k:
+        if len(num) == 0 or num == '1':
             continue
-        num = int(num)
-        flag = True
-        for i in range(2, int(num ** 0.5) + 1):
-            if num % i == 0:
-                flag = False
-        if flag:
-            count += 1
-    
-    return count
+        else:
+            num = int(num)
+            flag = 0
             
+            for i in range(2, int(num ** 0.5)+1):
+                if num % i == 0:
+                    flag = 1
+                    break
+            if not flag:
+                cnt += 1
+    return cnt
