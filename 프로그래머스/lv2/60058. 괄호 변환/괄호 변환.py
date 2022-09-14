@@ -1,69 +1,74 @@
-def div(p):
-    l_c = 0
-    r_c = 0
-    for i in range(len(p)):
-        if p[i] == '(':
-            l_c += 1
-        else:
-            r_c += 1
-        
-        if l_c == r_c:
-            break
-    u = ''
-    for k in range(i+1):
-        u+=p[k]
-    v = ''
-    for j in range(k+1, len(p)):
-        v+=p[j]
-    return u,v
+from collections import deque
+# 3
+# 올바른 괄호 문자열인지 check
 
-def chk(u):
-  if u[0] != '(':
-    return False
-  else:
-    stk = list()
-    stk.append(u[0])
-    for i in range(1, len(u)):
-      if u[i] == '(':
-          stk.append(u[i])
-      else:
-          stk.pop()
-    
-    if len(stk) == 0 :
-      return True
+
+def chk3(u):
+    if u[0] == ')':
+        return False
+    u = list(u)
+    u = deque(u)
+    stk = [u.popleft()]
+    while u:
+        ch = u.popleft()
+        if ch == ')' and stk[-1] == '(':
+            stk.pop()
+        else:
+            stk.append(ch)
+    return True
+# 2
+
+
+def chk2(p):
+    # 2
+    u = ''
+    v = ''
+    # l = ')', r = '('
+    l_cnt = 0
+    r_cnt = 0
+    if p[0] == ')':
+        l_cnt += 1
     else:
-      return False
-    
+        r_cnt += 1
+    for idx, data in enumerate(p[1:], 1):
+        if data == ')':
+            l_cnt += 1
+        else:
+            r_cnt += 1
+        if l_cnt == r_cnt:
+            break
+    u = p[:idx+1]
+    v = p[idx+1:]
+    return u, v
+
+
 def solution(p):
-    answer = ''
     # 1
     if len(p) == 0:
-      return answer
+        return p
+
     # 2
-    u, v = div(p)
-        
-    # 3    
-    flag = chk(u)
+    u, v = chk2(p)
+    # 3
+    flag = chk3(u)
     if flag:
-        # 3-1
-        return u + solution(v)
+        u += solution(v)
+        return u
+
     # 4
     else:
-        # 4-1
-        answer = '('
-        # 4-2
-        answer += solution(v)
-        # 4-3
-        answer += ')'
-        
-        # 4-4
-        u = u[1:]
-        u = u[:-1]
+        tmp = '('
+        tmp += solution(v)
+        tmp += ')'
+        u = u[1:len(u)-1]
+        u = list(u)
         for i in range(len(u)):
             if u[i] == '(':
-                answer += ')'
+                u[i] = ')'
             else:
-                answer += '('
-                
-        return answer
+                u[i] = '('
+        tmp += ''.join(u)
+        return tmp
+
+
 
