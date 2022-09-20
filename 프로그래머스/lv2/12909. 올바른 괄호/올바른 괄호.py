@@ -1,17 +1,20 @@
+from collections import deque
 def solution(s):
-
+    
+    if s[0] == ')':
+        return False
+    s = deque(list(s))
     stk = []
-    for data in s:
-        if len(stk) == 0 and data ==')':
-            return False
-        
-        if data == '(':
-            stk.append(data)
+    while s:
+        ch = s.popleft()
+        if ch == '(':
+            stk.append(ch)
         else:
-            stk.pop()
-            
-    if not len(stk):
+            if stk and stk[-1] == '(':
+                stk.pop()
+            # else:
+            #     stk.append(ch)
+    if stk:
+        return False
+    else:
         return True
-    
-    return False
-    
