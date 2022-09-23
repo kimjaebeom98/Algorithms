@@ -1,34 +1,23 @@
-"""
-1. n을 k진수로 변환
-2. 변환된 값에서 원소 하나씩 살펴보는데 0이 아니면 stk에 넣고, 0을 만나면 stk를 다 뽑는 식으로
-3. stk에서 뽑은 거는 소수 판단해줌
-"""
-from collections import deque
+def n_to_k(n, k):
+    if n < k:
+        return str(n)
+    q = n // k
+    r = n % k
+    return n_to_k(q, k) + str(r)
+
+def chk(n):
+    for i in range(2, int(n**0.5)+1):
+        if n % i == 0:
+            return 0
+    return 1
 
 def solution(n, k):
+    res = n_to_k(n, k)
+    res = res.split('0')
     cnt = 0
-    n_to_k = ''
-    tmp = []
-    while n:
-        r = n % k
-        n = n // k
-        tmp.append(str(r))
-    while tmp:
-        i = tmp.pop()
-        n_to_k += i
-    
-    n_to_k = n_to_k.split('0')
-    for num in n_to_k:
-        if len(num) == 0 or num == '1':
-            continue
-        else:
-            num = int(num)
-            flag = 0
-            
-            for i in range(2, int(num ** 0.5)+1):
-                if num % i == 0:
-                    flag = 1
-                    break
-            if not flag:
-                cnt += 1
+    for r in res:
+        if len(r) and r != '1' and chk(int(r)):
+            cnt += 1
+
     return cnt
+    
