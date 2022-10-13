@@ -105,3 +105,12 @@ def solution(s):
     return max_len      
 
 ```
+<br>
+### 다른 사람 코드 😂
+```python
+def longest_palindrom(s):
+    # 함수를 완성하세요
+    return len(s) if s[::-1] == s else max(longest_palindrom(s[:-1]), longest_palindrom(s[1:]))
+```
+하하... 재귀와... 슬라이싱... 이게 파이써닉한 코드인데...
+그냥 성장했다는 것에 만족하자^^ 
