@@ -1,27 +1,26 @@
 n = int(input())
-a = list(map(int, input().split()))
-visited = [0 for _ in range(n)]
-per = []
-
-m = 0
-def dfs(li):
-  global m
-  if len(li) == n:
-    res = 0
-    for i in range(n-1):
-      minus_res = abs(li[i] - li[i+1])
-      res += minus_res
-    m = max(m, res)
-    return
-  
-  for i in range(n):
-    if visited[i] == 0:
-      visited[i] = 1
-      li.append(a[i])
-      dfs(li)
-      visited[i] = 0
-      li.pop()  
+arr = list(map(int, input().split()))
+_max = 0
+visited = [0] * n
 
 
-dfs(per)
-print(m)
+def dfs(idx, depth, res):
+    global _max
+    if depth == n-1:
+        _max = max(res, _max)
+        return
+
+    for i in range(n):
+        if not visited[i]:
+            k = abs(arr[idx] - arr[i])
+            visited[i] = 1
+            dfs(i, depth+1, res+k)
+            visited[i] = 0
+
+
+for i in range(n):
+    if not visited[i]:
+        visited[i] = 1
+        dfs(i, 0, 0)
+        visited[i] = 0
+print(_max)
