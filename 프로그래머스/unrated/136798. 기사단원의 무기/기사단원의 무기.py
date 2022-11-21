@@ -20,10 +20,5 @@ def solution(number, limit, power):
         else:
             res.append(cnt * 2 -1)
     
-    sum_res = 0
-    for i in res:
-        if i > limit:
-            sum_res += power
-        else:
-            sum_res += i
-    return sum_res
+    
+    return sum([power if r > limit else r for r in res])
